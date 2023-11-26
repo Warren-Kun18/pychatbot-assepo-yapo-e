@@ -63,7 +63,7 @@ def changer_le_format(texte, supprime_ponctuation=True):
     return texte_sans_ponctuation.lower()
 
 def tf(chemin):
-    print("Test pour debud", chemin)
+
     fichier = open(chemin, "r", encoding='UTF-8')
     ligne = fichier.readlines()
     dico_repetition_mot = {}
@@ -113,7 +113,6 @@ def idf(repertoire):
     contenu = os.listdir(repertoire)
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
 
-    print("Est-ce que c'est toi ?",chemins_complets)
 
     for i in range(len(chemins_complets)):
         liste_dico.append(tf(chemins_complets[i]))
@@ -166,7 +165,7 @@ def tf_idf(repertoire):
                 matrice_tf_idf[mot] = [score_tf * idf_global[mot]]
 
 
-
+    return matrice_tf_idf
 
 
 

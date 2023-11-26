@@ -3,18 +3,21 @@ from os import listdir
 from os.path import isfile, join
 from Fonctions import *
 
+
 print("1. Aficher les mots moins importants")
 print("2. Aficher les mots avec le score TD-IDF le plus élevé")
-print("3. Indiquer les mots les plus répétés")
+print("3. Indiquer les mots les plus répétés par Chirac")
 print("4. Indiquer les noms des présidents qui ont parlé de la Nation et celui qui l'a répété le plus ")
 print("5. Indiquer le premier président qui a parler du climat et/ou de l'écologie")
 print("6. Quels sont les mots que tous les présidents ont évoqués hormis les mots importants")
+
+
 
 # Effectuer une liste des nom des fichiers du dossier "Speeches"
 
 liste_fichiers = [f for f in listdir('Speeches') if
            isfile(join("Speeches", f))]
-
+"""
 print("afficher premiere list", liste_fichiers)
 
 afficher_liste_de_nom(liste_fichiers)
@@ -22,8 +25,20 @@ afficher_liste_de_nom(liste_fichiers)
 for i in range(len(liste_fichiers)):
     convertir_fichier(liste_fichiers[i])
 
+"""
+score_tf_idf_corpus = tf_idf('Cleaned')
+mots_nom_importants = []
+for cle, valeur in score_tf_idf_corpus.items():
+    if 0 in valeur:
+        mots_nom_importants.append(cle)
 
-print(tf_idf('Cleaned'))
+print("Les mots les plus imortants sont :", end=" ")
+for i in range(len(mots_nom_importants)):
+    print(mots_nom_importants[i], ",", end = " " )
+
+
+
+
 
 
 """
