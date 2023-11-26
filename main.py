@@ -11,20 +11,19 @@ print("5. Indiquer le premier président qui a parler du climat et/ou de l'écol
 print("6. Quels sont les mots que tous les présidents ont évoqués hormis les mots importants")
 
 # Effectuer une liste des nom des fichiers du dossier "Speeches"
-liste_fichiers = [f for f in listdir('C:/Users/warre/PycharmProjects/ProjectSemestre2/Speeches') if
-           isfile(join("C:/Users/warre/PycharmProjects/ProjectSemestre2/Speeches", f))]
 
-print(liste_fichiers)
-"supprime_ponctuation(test)"
+liste_fichiers = [f for f in listdir('Speeches') if
+           isfile(join("Speeches", f))]
+
+print("afficher premiere list", liste_fichiers)
+
 afficher_liste_de_nom(liste_fichiers)
 
 for i in range(len(liste_fichiers)):
     convertir_fichier(liste_fichiers[i])
 
-fichier_cleaned = []
-for i in range (len(liste_fichiers)):
-    fichier_cleaned[i] =
 
+print(tf_idf('Cleaned'))
 
 
 """
