@@ -94,3 +94,21 @@ def idf(nom_fichier):
         dico_idf[mot] = int(log((2 / (count)) + 1))
 
     return dico_idf
+
+#fonction TF-IDF
+def scoreTF_IDF(chemin_du_document):#le parametre est une liste qui doit contenir les differents fichiers
+    matriceTF_idf = []
+    #remplissage de la ligne
+    for mot in dictionaire_general_rep_mot.keys():
+        ligne_matriceTF_idf = []
+        for fichier in chemin_du_document:
+            f_tf = tf(fichier)
+            value_tf=f_tf.get(mot,0)#key_tf prend la valeur attribuer a la clé de "mot" si elle existe dans le cas contraire c'est 0
+            value_idf=dictionaire_general_rep_mot[mot]
+            tf_idf= value_tf*value_idf
+            ligne_matriceTF_idf.append(tf_idf)#ajout du score tf_idf du mot dans chaque document(correspond a la colonne)
+        matriceTF_idf.append(ligne_matriceTF_idf)#ajout de la ligne du score tf_idf du mot dans la matrice
+
+    return matriceTF_idf
+
+
