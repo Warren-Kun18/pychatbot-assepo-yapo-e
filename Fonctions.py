@@ -148,22 +148,26 @@ def idf(repertoire):
 """
 
 def tf_idf(repertoire):
+    #Création d'une liste regroupant les tf de chaque fichier
     tf_global = []
+    #Appel de la fonction idf
     idf_global = idf(repertoire)
+    #Faire une liste des chemins du dossier choisi
     contenu = os.listdir(repertoire)
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
+
     for i in range(len(chemins_complets)):
+        #Mettre à chaque élément de la liste son score tf
         tf_global.append(tf(chemins_complets[i]))
 
-    matrice_tf_idf = {}
+    matrice_tf_idf = {}#matrice est un dictionaire
     for i in range(len(tf_global)):
-        for mot, score_tf in tf_global[i].items():
+        for mot, score_tf in tf_global[i].items():#parcours de la liste tf_global contenant les tf"dico" de chaque fichier
 
             if mot in matrice_tf_idf:
-                matrice_tf_idf[mot].append(score_tf * idf_global[mot])
+                matrice_tf_idf[mot].append(score_tf * idf_global[mot])#ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
             else:
-                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]
-
+                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
 
     return matrice_tf_idf
 
@@ -171,3 +175,13 @@ def tf_idf(repertoire):
 
 
 
+
+
+def recherche_mot(liste_question, matrice_tf_idf):
+    list_mot_trouves = []
+    for mot in liste_question:
+        if mot in matrice_tf_idf :
+            list_mot_trouves.append(mot)
+    return list_mot_trouves
+
+def calcul_tf_idf(liste_mot_trouves, liste_question):
