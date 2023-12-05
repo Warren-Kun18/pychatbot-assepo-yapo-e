@@ -1,8 +1,8 @@
 import os
 import shutil
 from math import *
-from os import listdir
-from os.path import isfile, join
+from os import listdir #renvoie une liste contenant les noms des fichier dans le répertoire spécifié
+from os.path import isfile, join #vérifie si un chemin donné correspond à un fichier régulier (renvoi un booleen)
 
 # Créer un dictionnaire qui asssocie à chaque nom, un prénom
 nom_des_presidents = {
@@ -11,14 +11,14 @@ nom_des_presidents = {
 }
 
 
-# Extraire le nom des president des noms des fichiers
+# fonction pour extraire le nom des presidents des noms des fichiers
 def extraire_nom(nom_du_fichier):
     # Extraire le nom des présiedents
     nom_president_avec_extension = nom_du_fichier.split('_')
     nom_president_sans_extension = nom_president_avec_extension[1].split('.')
     nom_president = nom_president_sans_extension[0]
 
-    # Verifier si le nom du president comporte un 1 ou un 2 au dernier caractère. Si oui, on le supprime.
+    # Verifier si le nom du president comporte un nombre. Si oui, on le supprime.
     if (nom_president[-1] == '1') or (nom_president[-1] == '2'):
         nom_president = nom_president[:-1]
 
@@ -26,10 +26,10 @@ def extraire_nom(nom_du_fichier):
 
 
 def associer_prenom(nom, nom_des_presidents):
-    # Retourne le dictionnaire crée précedemment
+    # Retourne le dictionnaire 'nom_des_presidents'
     return nom_des_presidents[nom]
 
-
+#fonction affichage de la liste de nom
 def afficher_liste_de_nom(noms_des_fichiers):
     liste_de_nom = []
     # Ajoute à chaque élément de ma liste "liste_de_nom"
@@ -38,20 +38,20 @@ def afficher_liste_de_nom(noms_des_fichiers):
         liste_de_nom = list(set(liste_de_nom))
     print(liste_de_nom)
 
-
+#fonction de conversion de chaque fichier en minuscule
 def convertir_fichier(nom_fichier):
     # Copie le contenu du fichier
-    fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')
+    fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')#ouverture du fichier a modifier
     lignes = fichier_origine.readlines()
     fichier_origine.close()
     # Créer un nouveau fichier dans le dossier Cleaned et transformer tout le dossier en minuscule
-    fichier_modifie = open("Cleaned/{}".format(nom_fichier), "w", encoding='UTF-8')
+    fichier_modifie = open("Cleaned/{}".format(nom_fichier), "w", encoding='UTF-8')#ouverture d'un nouveau fichier clean
     for ligne in lignes:
         fichier_modifie.write(changer_le_format(ligne))
     fichier_modifie.close()
 
 
-# Supprime la ponctuation des fichiers et remplace les apostrophes par des la ou le
+# Supprime la ponctuation des fichiers
 def changer_le_format(texte, supprime_ponctuation=True):
     texte_sans_ponctuation = ""
     if supprime_ponctuation:
@@ -62,15 +62,16 @@ def changer_le_format(texte, supprime_ponctuation=True):
 
     return texte_sans_ponctuation.lower()
 
+#fonction tf
 def tf(chemin):
 
     fichier = open(chemin, "r", encoding='UTF-8')
-    ligne = fichier.readlines()
+    lignes = fichier.readlines()
     dico_repetition_mot = {}
     # transformation de fichier en liste
     liste = []
-    for i in range(len(ligne)):
-        liste.append(ligne[i].strip().split(" "))
+    for i in range(len(lignes)):
+        liste.append(lignes[i].strip().split(" "))
     for i in range(len(liste)):
         for j in range(len(liste[i])):
             if len(liste[i][j]) <= 1:
@@ -170,6 +171,24 @@ def tf_idf(repertoire):
                 matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
 
     return matrice_tf_idf
+
+#PARTIE 2
+
+#fonction tokenisation de la question
+def tf_idf_question(question):
+    question_clean=changer_le_format(question)#permet d'enlever toutes les ponctuations et de lower la question
+    liste_de_mot=question_clean.split(" ")
+    return liste_de_mot
+#fonction calcul de la similarité
+def produit_scalaire(vectA,vectB):
+
+
+
+
+
+
+
+
 
 
 
