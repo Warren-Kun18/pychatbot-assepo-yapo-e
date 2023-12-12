@@ -40,6 +40,9 @@ def afficher_liste_de_nom(noms_des_fichiers):
 
 #fonction de conversion de chaque fichier en minuscule
 def convertir_fichier(nom_fichier):
+    # creation du fichier cleaned s'il n'existe pas
+    if not os.path.exists("Cleaned"):
+        os.makedirs("Cleaned")
     # Copie le contenu du fichier
     fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')#ouverture du fichier a modifier
     lignes = fichier_origine.readlines()
@@ -52,7 +55,7 @@ def convertir_fichier(nom_fichier):
 
 
 # Supprime la ponctuation des fichiers
-def changer_le_format(texte, supprime_ponctuation=True):
+def changer_le_format(texte, supprime_ponctuation=True):#
     texte_sans_ponctuation = ""
     if supprime_ponctuation:
         texte = texte.replace("-", " ")
@@ -110,21 +113,24 @@ def idf(nom_fichier):
     return dico_idf
 """
 def idf(repertoire):
+    #liste pour les tf de chaque fichier
     liste_dico =[]
     contenu = os.listdir(repertoire)
+    #creation d'une liste contenant les chemins de chaque fichier
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
-
-
+    #ajout du tf de chaque fichier dans liste_dico
     for i in range(len(chemins_complets)):
         liste_dico.append(tf(chemins_complets[i]))
-
+    #creation d'un dico qui contient le nombre de fois un mot est present dans le corpus
     dico_global = {}
+    #ajout de chaque mot du corpus et du nombre de fois qu'il est present dans le corpus
     for i in range(len(liste_dico)):
         for mot, recurrence in liste_dico[i].items():
             if mot in dico_global:
                 dico_global[mot] = dico_global[mot] +1
             else:
                 dico_global[mot] = 1
+    #calcule du idf de chaque mot avec la formule
     for mot_global, recurrence_global in dico_global.items():
         dico_global[mot_global] = log(len(chemins_complets)/recurrence_global)
     return dico_global
@@ -180,7 +186,9 @@ def tf_idf_question(question):
     liste_de_mot=question_clean.split(" ")
     return liste_de_mot
 #fonction calcul de la similarité
-def produit_scalaire(vectA,vectB):
+"""def produit_scalaire(vectA,vectB):
+    l
+    for i in range (len(mat))
 
 
 
@@ -203,4 +211,4 @@ def recherche_mot(liste_question, matrice_tf_idf):
             list_mot_trouves.append(mot)
     return list_mot_trouves
 
-def calcul_tf_idf(liste_mot_trouves, liste_question):
+def calcul_tf_idf(liste_mot_trouves, liste_question):"""
