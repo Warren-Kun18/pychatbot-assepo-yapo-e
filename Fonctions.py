@@ -177,29 +177,70 @@ def tf_idf(repertoire):
 #fonction tokenisation de la question
 def tf_idf_question(question):
     question_clean=changer_le_format(question)#permet d'enlever toutes les ponctuations et de lower la question
-    liste_de_mot=question_clean.split(" ")
-    return liste_de_mot
+    liste_de_mot_question=question_clean.split(" ")
+    return liste_de_mot_question
 #fonction calcul de la similarité
-"def produit_scalaire(vectA,vectB):"
 
-
-
-
-
-
-def recherche_mot(liste_question, matrice_tf_idf):
+def recherche_mot(liste_mot_question, matrice_tf_idf):
     list_mot_trouves = []
-    for mot in liste_question:
+    for mot in liste_mot_question:
         if mot in matrice_tf_idf :
             list_mot_trouves.append(mot)
     return list_mot_trouves
 
-def tf_question(liste_question, matrice_tf_idf):
 
-def calcul_tf_idf(matrice_tf_idf, liste_question, repertoire):
-    dico_idf = {} # creation d'une liste qui va reprtorié tous les mots du corpus
-    dico = {}
-    dico = tf_idf(repertoire)
-    for mot, valeur in dico.items():
-        if mot in dico and liste_question :
+
+def tf_question(liste_mot_question, matrice_tf_idf):
+    dico_tf_question = {} #création d'un dico
+    for mot in matrice_tf_idf.keys(): #Parcours de la matrice tf-idf
+        if mot in liste_mot_question: #Si le mot de la question se trouve dans le corpus on calcule le TF
+            dico_tf_question[mot] = liste_mot_question.count(mot)/len(liste_mot_question)
+        else: #Sinon on met 0 en valeur
+            dico_tf_question[mot] = 0
+    return dico_tf_question
+
+
+
+def calcul_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
+    idf_qst = idf(chemin) # Appel de la fonction IDF
+    tf_qst = tf_question(liste_mot_question, matrice_tf_idf) #Appel de la fonction TF de la question
+    #print(tf_qst)
+    tf_idf_qst = 0
+    liste_vecteurs = []
+    for mot in idf_qst.keys():
+        tf_idf_qst += idf_qst[mot]*tf_qst[mot]
+        liste_vecteurs.append(idf_qst[mot]*tf_qst[mot])
+    return liste_vecteurs
+
+
+def produit_scalaire(vectA, vectB):
+    sommeAB = 0 #Initialisation d'une variable somme
+    m = len(vectB)
+    print(m)
+    for i in range(0, m):
+        print(i)
+        sommeAB = sommeAB + (vectA[i]*vectB[i]) #Somme du produit de  chaque élément du vecteur A et B
+    print("Somme AB :",sommeAB)
+    return sommeAB
+
+def norme_vecteur(vect):
+    somme = 0
+    m = len(vect)
+    for i in range(0, m):
+        somme = somme + (vect[i]*vect[i])  #Somme des carrées de chaquue élément du vecteur A
+
+    somme = sqrt(somme) #Racine carée de la somme du des carrées de chaque élément du vecteur A
+    print("Norme :",somme)
+    return somme
+
+def calcul_similarité(vectA, vectB):
+    print("Vecteur B :",vectB)
+    resultat = produit_scalaire(vectA, vectB) / (norme_vecteur(vectA) * norme_vecteur(vectB)) #Calcul de la similarité
+
+    return resultat
+
+
+
+
+
 

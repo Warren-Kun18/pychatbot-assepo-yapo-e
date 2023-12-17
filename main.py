@@ -65,7 +65,7 @@ for mot in tf_idf_cleaned.keys():
     elif somme_tf_idf == liste_mot_plus_repete_chirac[0][1]:
         liste_mot_plus_repete_chirac.append((mot,somme_tf_idf))
 """
-
+"""
 #fonction 4:  le(s) nom(s) du (des) président(s) qui a (ont) parlé de la « Nation » et celui qui l’a répété le plus de fois
 # Recuperation du chemin du dossier où se trouve le script Python
 chemin_script = os.path.dirname(os.path.realpath(__file__))
@@ -127,10 +127,23 @@ for fichier in listdir(dossier_corpus):
         # Vérifier si l'un des mots du champ lexical est présent dans le fichier
         if any(mot in frequence_mots for mot in champ_lexical_ecologie):
             presidents_climat_ecologie[nom_president] = True  # Enregistrer le président comme ayant parlé de ces sujets
+"""
 
 
+question = "Je suis décidé à placer le septennat qui commence ?"
 
+vecteur_question = calcul_tf_idf('Cleaned', tf_idf_question(question), tf_idf('Cleaned'))
+print(vecteur_question)
+matrice = tf_idf("Cleaned")
+print(matrice)
+print("Test len :",len(matrice.values()))
+matval = len(matrice.values())
+for i in range(0, matval):
+    print(calcul_similarité(vecteur_question, list(matrice.values())[0]), "\n")
 
+#print("Test : ",test)
+"""
+>>>>>>> d599b19 (Fonctions Calcul vecteur TF-IDF, Calcul de la similarité fonctionnelles)
 #demande a l'utilisateur de choisir une fonctionalité
 numero=int(input("Pour éxécuter l'une des fonctionnalité suivante entrez tapez le numéro qui précède la fonctionnalité: "))
 #saisie securise
@@ -152,7 +165,6 @@ elif numero==5:
     else:
         print("Aucun président n'a mentionné le climat ou l'écologie.")
 
-
-
+"""
 
 
