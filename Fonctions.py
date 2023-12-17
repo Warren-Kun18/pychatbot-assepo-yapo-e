@@ -110,7 +110,7 @@ def idf(nom_fichier):
     return dico_idf
 """
 def idf(repertoire):
-    liste_dico =[]
+    liste_dico =[] #Création d'une liste qui se nomme Liste dico
     contenu = os.listdir(repertoire)
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
 
@@ -148,9 +148,11 @@ def idf(repertoire):
     return matriceTF_idf
 """
 
-def tf_idf(repertoire):
+def tf_idf(repertoire, transposee = False):
     #Création d'une liste regroupant les tf de chaque fichier
+    liste_mots = []
     tf_global = []
+    nb_mot_unique = 0
     #Appel de la fonction idf
     idf_global = idf(repertoire)
     #Faire une liste des chemins du dossier choisi
@@ -159,19 +161,45 @@ def tf_idf(repertoire):
 
     for i in range(len(chemins_complets)):
         #Mettre à chaque élément de la liste son score tf
-        tf_global.append(tf(chemins_complets[i]))
+        tf_fichier = tf(chemins_complets[i])
+        tf_global.append(tf_fichier)
+        print(tf_fichier)
 
+        for mot, occurence in tf_fichier.items():
+            if mot not in liste_mots:
+                liste_mots.append(mot)
+
+    nb_mot_unique += len(liste_mots)
     matrice_tf_idf = {}#matrice est un dictionaire
-    for i in range(len(tf_global)):
-        for mot, score_tf in tf_global[i].items():#parcours de la liste tf_global contenant les tf"dico" de chaque fichier
+    for i in range(nb_mot_unique):
+        for j in range(len(tf_global)):
 
-            if mot in matrice_tf_idf:
-                matrice_tf_idf[mot].append(score_tf * idf_global[mot])#ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
+            if liste_mots[i] in matrice_tf_idf:
+                score = 0.0
+                if liste_mots[i] in tf_global[j]: # Si le mot n'apparait pas dans le fichier on met 0.0
+                    score = tf_global[j][liste_mots[i]] * idf_global[liste_mots[i]]
+                matrice_tf_idf[liste_mots[i]].append(score)   #ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
             else:
-                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
+                score = 0.0
+                if liste_mots[i] in tf_global[j]:  # Si le mot n'apparait pas dans le fichier on met 0.0
+                    score = tf_global[j][liste_mots[i]] * idf_global[liste_mots[i]]
+                matrice_tf_idf[liste_mots[i]] = [score]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
+
+    if transposee:
+        matrice_tf_idf = transpose_matrice(matrice_tf_idf)
 
     return matrice_tf_idf
 
+def transpose_matrice(matrice_tf_idf):
+    B = []
+
+    for i in range(len(list(matrice_tf_idf.values())[0])):
+        c = []
+        for j in range(len(matrice_tf_idf.values())):
+            c.append(list(matrice_tf_idf.values())[j][i])
+        B.append(c)
+
+    return B
 #PARTIE 2
 
 #fonction tokenisation de la question
@@ -201,16 +229,16 @@ def tf_question(liste_mot_question, matrice_tf_idf):
 
 
 
-def calcul_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
+def calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf):
     idf_qst = idf(chemin) # Appel de la fonction IDF
     tf_qst = tf_question(liste_mot_question, matrice_tf_idf) #Appel de la fonction TF de la question
     #print(tf_qst)
     tf_idf_qst = 0
-    liste_vecteurs = []
+    liste_vecteur = []
     for mot in idf_qst.keys():
         tf_idf_qst += idf_qst[mot]*tf_qst[mot]
-        liste_vecteurs.append(idf_qst[mot]*tf_qst[mot])
-    return liste_vecteurs
+        liste_vecteur.append(idf_qst[mot]*tf_qst[mot])
+    return liste_vecteur
 
 
 def produit_scalaire(vectA, vectB):
@@ -218,9 +246,11 @@ def produit_scalaire(vectA, vectB):
     m = len(vectB)
     print(m)
     for i in range(0, m):
-        print(i)
-        sommeAB = sommeAB + (vectA[i]*vectB[i]) #Somme du produit de  chaque élément du vecteur A et B
-    print("Somme AB :",sommeAB)
+        """print(i)
+        print("Vecteur A : ", vectA[i])
+        print("Vecteur B : ", vectB[i])"""
+        sommeAB = sommeAB + (float(vectA[i])*float(vectB[i])) #Somme du produit de  chaque élément du produits des vecteurs A et B
+    #print("Somme AB :",sommeAB)
     return sommeAB
 
 def norme_vecteur(vect):
@@ -230,11 +260,12 @@ def norme_vecteur(vect):
         somme = somme + (vect[i]*vect[i])  #Somme des carrées de chaquue élément du vecteur A
 
     somme = sqrt(somme) #Racine carée de la somme du des carrées de chaque élément du vecteur A
-    print("Norme :",somme)
+    """print("Norme :",somme)"""
     return somme
 
 def calcul_similarité(vectA, vectB):
-    print("Vecteur B :",vectB)
+    """print("Vecteur A : " ,vectA)
+    print("Vecteur B :",vectB)"""
     resultat = produit_scalaire(vectA, vectB) / (norme_vecteur(vectA) * norme_vecteur(vectB)) #Calcul de la similarité
 
     return resultat

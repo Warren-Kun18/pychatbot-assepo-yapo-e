@@ -2,7 +2,7 @@ import os
 from os import listdir
 from os.path import isfile, join
 from Fonctions import *
-
+"""
 # Effectuer une liste des nom des fichiers du dossier "Speeches"
 liste_fichiers = [f for f in listdir('Speeches') if
            isfile(join("Speeches", f))]
@@ -45,7 +45,7 @@ for mot in tf_idf_cleaned.keys():
     elif somme_tf_idf== liste_mot_important[0][1]:
         liste_mot_important.append((mot,somme_tf_idf))
 
-
+"""
 #fonction 3: mot le plus prononcé par chirac
 """tf_idf_cleaned = tf_idf('Cleaned')  # tf_idf du fichier cleaned
 liste_mot_plus_repete_chirac = []
@@ -130,20 +130,32 @@ for fichier in listdir(dossier_corpus):
 """
 
 
-question = "Je suis décidé à placer le septennat qui commence ?"
+question = "et le jus d orange"
+nom_repertoire = 'Testo'
 
-vecteur_question = calcul_tf_idf('Cleaned', tf_idf_question(question), tf_idf('Cleaned'))
+vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire, tf_idf_question(question), tf_idf(nom_repertoire))
 print(vecteur_question)
-matrice = tf_idf("Cleaned")
+matrice = tf_idf(nom_repertoire, True)
 print(matrice)
-print("Test len :",len(matrice.values()))
-matval = len(matrice.values())
-for i in range(0, matval):
-    print(calcul_similarité(vecteur_question, list(matrice.values())[0]), "\n")
 
+#print("Test len :", len(matrice.values()))
+matval = len(matrice)
+similariteMax = 0
+idDoc = None
+for i in range(0, matval):
+    similariteCourante = calcul_similarité(vecteur_question, matrice[i])
+    print((similariteCourante))
+    if (similariteCourante > similariteMax):
+        print("yeaaah")
+        similariteMax = similariteCourante
+        idDoc = i
+
+print(similariteMax)
+print(idDoc, "\n")
+"""
 #print("Test : ",test)
 """
->>>>>>> d599b19 (Fonctions Calcul vecteur TF-IDF, Calcul de la similarité fonctionnelles)
+"""
 #demande a l'utilisateur de choisir une fonctionalité
 numero=int(input("Pour éxécuter l'une des fonctionnalité suivante entrez tapez le numéro qui précède la fonctionnalité: "))
 #saisie securise
