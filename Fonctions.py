@@ -36,13 +36,10 @@ def afficher_liste_de_nom(noms_des_fichiers):
     for i in range(len(noms_des_fichiers)):
         liste_de_nom.append(extraire_nom(noms_des_fichiers[i]))
         liste_de_nom = list(set(liste_de_nom))
-    return liste_de_nom
+    print(liste_de_nom)
 
 #fonction de conversion de chaque fichier en minuscule
 def convertir_fichier(nom_fichier):
-    # creation du fichier cleaned s'il n'existe pas
-    if not os.path.exists("Cleaned"):
-        os.makedirs("Cleaned")
     # Copie le contenu du fichier
     fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')#ouverture du fichier a modifier
     lignes = fichier_origine.readlines()
@@ -55,7 +52,7 @@ def convertir_fichier(nom_fichier):
 
 
 # Supprime la ponctuation des fichiers
-def changer_le_format(texte, supprime_ponctuation=True):#
+def changer_le_format(texte, supprime_ponctuation=True):
     texte_sans_ponctuation = ""
     if supprime_ponctuation:
         texte = texte.replace("-", " ")
@@ -113,24 +110,21 @@ def idf(nom_fichier):
     return dico_idf
 """
 def idf(repertoire):
-    #liste pour les tf de chaque fichier
     liste_dico =[]
     contenu = os.listdir(repertoire)
-    #creation d'une liste contenant les chemins de chaque fichier
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
-    #ajout du tf de chaque fichier dans liste_dico
+
+
     for i in range(len(chemins_complets)):
         liste_dico.append(tf(chemins_complets[i]))
-    #creation d'un dico qui contient le nombre de fois un mot est present dans le corpus
+
     dico_global = {}
-    #ajout de chaque mot du corpus et du nombre de fois qu'il est present dans le corpus
     for i in range(len(liste_dico)):
         for mot, recurrence in liste_dico[i].items():
             if mot in dico_global:
                 dico_global[mot] = dico_global[mot] +1
             else:
                 dico_global[mot] = 1
-    #calcule du idf de chaque mot avec la formule
     for mot_global, recurrence_global in dico_global.items():
         dico_global[mot_global] = log(len(chemins_complets)/recurrence_global)
     return dico_global
@@ -164,7 +158,7 @@ def tf_idf(repertoire):
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
 
     for i in range(len(chemins_complets)):
-        #ajout du score tf de chaque fichier
+        #Mettre à chaque élément de la liste son score tf
         tf_global.append(tf(chemins_complets[i]))
 
     matrice_tf_idf = {}#matrice est un dictionaire
@@ -172,9 +166,9 @@ def tf_idf(repertoire):
         for mot, score_tf in tf_global[i].items():#parcours de la liste tf_global contenant les tf"dico" de chaque fichier
 
             if mot in matrice_tf_idf:
-                matrice_tf_idf[mot].append(score_tf * idf_global[mot])#ajout du score tf_idf de chaque mot dans la liste associer a chaque mot
+                matrice_tf_idf[mot].append(score_tf * idf_global[mot])#ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
             else:
-                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste  associer a ce mot
+                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
 
     return matrice_tf_idf
 
@@ -186,18 +180,7 @@ def tf_idf_question(question):
     liste_de_mot=question_clean.split(" ")
     return liste_de_mot
 #fonction calcul de la similarité
-"""def produit_scalaire(vectA,vectB):
-    l
-    for i in range (len(mat))
-
-
-
-
-
-
-
-
-
+"def produit_scalaire(vectA,vectB):"
 
 
 
@@ -211,4 +194,12 @@ def recherche_mot(liste_question, matrice_tf_idf):
             list_mot_trouves.append(mot)
     return list_mot_trouves
 
-def calcul_tf_idf(liste_mot_trouves, liste_question):"""
+def tf_question(liste_question, matrice_tf_idf):
+
+def calcul_tf_idf(matrice_tf_idf, liste_question, repertoire):
+    dico_idf = {} # creation d'une liste qui va reprtorié tous les mots du corpus
+    dico = {}
+    dico = tf_idf(repertoire)
+    for mot, valeur in dico.items():
+        if mot in dico and liste_question :
+
