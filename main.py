@@ -2,13 +2,15 @@ import os
 from os import listdir
 from os.path import isfile, join
 from Fonctions import *
-"""
+
+nom_repertoire = 'Speeches'
+
 # Effectuer une liste des nom des fichiers du dossier "Speeches"
-liste_fichiers = [f for f in listdir('Speeches') if
-           isfile(join("Speeches", f))]
+liste_fichiers = [f for f in listdir(nom_repertoire) if
+           isfile(join(nom_repertoire, f))]
 for i in range(len(liste_fichiers)):
     convertir_fichier(liste_fichiers[i])
-
+"""
 #FONCTIONALITE
 print("1. Afficher les mots moins importants")
 print("2. Afficher les mots avec le score TD-IDF le plus élevé")
@@ -130,28 +132,18 @@ for fichier in listdir(dossier_corpus):
 """
 
 
-question = "et le jus d orange"
-nom_repertoire = 'Testo'
+question = "fixera les grandes orientations"
+
 
 vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire, tf_idf_question(question), tf_idf(nom_repertoire))
 print(vecteur_question)
 matrice = tf_idf(nom_repertoire, True)
 print(matrice)
 
+a = calcul_document_pertinent(matrice, vecteur_question, liste_fichiers)
+print(a)
 #print("Test len :", len(matrice.values()))
-matval = len(matrice)
-similariteMax = 0
-idDoc = None
-for i in range(0, matval):
-    similariteCourante = calcul_similarité(vecteur_question, matrice[i])
-    print((similariteCourante))
-    if (similariteCourante > similariteMax):
-        print("yeaaah")
-        similariteMax = similariteCourante
-        idDoc = i
 
-print(similariteMax)
-print(idDoc, "\n")
 """
 #print("Test : ",test)
 """

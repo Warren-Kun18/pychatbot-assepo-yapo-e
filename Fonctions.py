@@ -52,7 +52,7 @@ def convertir_fichier(nom_fichier):
 
 
 # Supprime la ponctuation des fichiers
-def changer_le_format(texte, supprime_ponctuation=True):
+def changer_le_format(texte, supprime_ponctuation=True):#Si on ne met pas la parametre ça supprime la ponctuation
     texte_sans_ponctuation = ""
     if supprime_ponctuation:
         texte = texte.replace("-", " ")
@@ -148,7 +148,7 @@ def idf(repertoire):
     return matriceTF_idf
 """
 
-def tf_idf(repertoire, transposee = False):
+def tf_idf(repertoire, transposee = False):#Si il n'y a pas de parametre pour la transposée ça ne met pas la transposée
     #Création d'une liste regroupant les tf de chaque fichier
     liste_mots = []
     tf_global = []
@@ -271,7 +271,17 @@ def calcul_similarité(vectA, vectB):
     return resultat
 
 
+def calcul_document_pertinent(matrice_tf_idf, vecteur_tf_idf_question, liste_noms_fichiers):
+    matval = len(matrice_tf_idf)
+    similariteMax = 0
+    idDoc = None
+    for i in range(0, matval):
+        similariteCourante = calcul_similarité(vecteur_tf_idf_question, matrice_tf_idf[i])
+        print((similariteCourante))
+        if (similariteCourante > similariteMax):
+            similariteMax = similariteCourante
+            idDoc = i
 
-
-
-
+    print(similariteMax)
+    print(idDoc, "\n")
+    return liste_noms_fichiers[idDoc]
