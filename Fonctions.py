@@ -36,7 +36,7 @@ def afficher_liste_de_nom(noms_des_fichiers):
     for i in range(len(noms_des_fichiers)):
         liste_de_nom.append(extraire_nom(noms_des_fichiers[i]))
         liste_de_nom = list(set(liste_de_nom))
-    print(liste_de_nom)
+    return liste_de_nom
 
 #fonction de conversion de chaque fichier en minuscule
 def convertir_fichier(nom_fichier):
@@ -164,7 +164,7 @@ def tf_idf(repertoire):
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
 
     for i in range(len(chemins_complets)):
-        #Mettre à chaque élément de la liste son score tf
+        #ajout du score tf de chaque fichier
         tf_global.append(tf(chemins_complets[i]))
 
     matrice_tf_idf = {}#matrice est un dictionaire
@@ -172,9 +172,9 @@ def tf_idf(repertoire):
         for mot, score_tf in tf_global[i].items():#parcours de la liste tf_global contenant les tf"dico" de chaque fichier
 
             if mot in matrice_tf_idf:
-                matrice_tf_idf[mot].append(score_tf * idf_global[mot])#ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
+                matrice_tf_idf[mot].append(score_tf * idf_global[mot])#ajout du score tf_idf de chaque mot dans la liste associer a chaque mot
             else:
-                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
+                matrice_tf_idf[mot] = [score_tf * idf_global[mot]]#creation du mot et ajout du score tf_idf du mot dans la liste  associer a ce mot
 
     return matrice_tf_idf
 
