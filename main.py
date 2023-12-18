@@ -132,15 +132,15 @@ for fichier in listdir(dossier_corpus):
             presidents_climat_ecologie[nom_president] = True  # Enregistrer le président comme ayant parlé de ces sujets
 """
 
-question = ("Aimes tu bieng les pates ?")
+question = ("Le climat est une source de tension ?")
 question_formate = changer_le_format(question, )
 
 
 
-matrice = tf_idf(nom_repertoire_test, True)
+matrice = tf_idf(nom_repertoire, True)
 #print(matrice)
 liste_question = tokenisation_question( question)
-vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire_test, liste_question, tf_idf(nom_repertoire_test))
+vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire, liste_question, tf_idf(nom_repertoire))
 doc_pertinent = calcul_document_pertinent(matrice, vecteur_question, liste_fichiers)
 print(doc_pertinent)
 #print("Test len :", len(matrice.values()))
@@ -148,8 +148,10 @@ print(doc_pertinent)
 
 
 
-meilleur_tf_idf(nom_repertoire_test, liste_question, tf_idf(nom_repertoire_test))
+mot_pertinent = meilleur_tf_idf(nom_repertoire, liste_question, tf_idf(nom_repertoire))
+print("Mot pertinent :" ,mot_pertinent)
 
+print("Reponse pertinente", reponse_pertinente("./{}/{}".format(nom_repertoire, doc_pertinent), mot_pertinent))
 
 """
 #print("Test : ",test)

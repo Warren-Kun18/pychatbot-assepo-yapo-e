@@ -316,7 +316,7 @@ def calcul_document_pertinent(matrice_tf_idf, vecteur_tf_idf_question, liste_nom
 
 
 def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
-    vecteur_question = calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, True)
+    vecteur_question = calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, True)#Appel de la fonction calcul vecteur tf idf question
     print(calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf))
     print("Vecteur question :", vecteur_question)
     tf_idf_max = 0
@@ -328,3 +328,14 @@ def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
         # print("Avant: ", valeur, mot)
 
     print("Test score :", tf_idf_max, "Mot : ", mot_max)
+    return mot_max
+
+def reponse_pertinente(fichier, mot):
+    fichier_ouvert = open(fichier, "r", encoding='UTF-8')
+    lignes = fichier_ouvert.readlines()
+    phrase_pertinente = ""
+    for ligne in lignes:
+        if ligne.find(mot) > -1:
+            phrase_pertinente = ligne
+            break
+    return phrase_pertinente
