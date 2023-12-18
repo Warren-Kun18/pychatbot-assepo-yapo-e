@@ -132,7 +132,7 @@ for fichier in listdir(dossier_corpus):
             presidents_climat_ecologie[nom_president] = True  # Enregistrer le président comme ayant parlé de ces sujets
 """
 
-question = ("Le climat est une source de tension ?")
+question = ("Comment le climat change avec le temps ?")
 question_formate = changer_le_format(question, )
 
 
@@ -150,8 +150,10 @@ print(doc_pertinent)
 
 mot_pertinent = meilleur_tf_idf(nom_repertoire, liste_question, tf_idf(nom_repertoire))
 print("Mot pertinent :" ,mot_pertinent)
+phrase_pertinente =  reponse_pertinente("./{}/{}".format(nom_repertoire, doc_pertinent), mot_pertinent)
+print("Reponse pertinente",phrase_pertinente)
 
-print("Reponse pertinente", reponse_pertinente("./{}/{}".format(nom_repertoire, doc_pertinent), mot_pertinent))
+generation_reponse(phrase_pertinente, question)
 
 """
 #print("Test : ",test)

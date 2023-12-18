@@ -316,7 +316,8 @@ def calcul_document_pertinent(matrice_tf_idf, vecteur_tf_idf_question, liste_nom
 
 
 def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
-    vecteur_question = calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, True)#Appel de la fonction calcul vecteur tf idf question
+    vecteur_question = calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf,
+                                                      True)  # Appel de la fonction calcul vecteur tf idf question
     print(calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf))
     print("Vecteur question :", vecteur_question)
     tf_idf_max = 0
@@ -330,6 +331,7 @@ def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
     print("Test score :", tf_idf_max, "Mot : ", mot_max)
     return mot_max
 
+
 def reponse_pertinente(fichier, mot):
     fichier_ouvert = open(fichier, "r", encoding='UTF-8')
     lignes = fichier_ouvert.readlines()
@@ -338,4 +340,28 @@ def reponse_pertinente(fichier, mot):
         if ligne.find(mot) > -1:
             phrase_pertinente = ligne
             break
-    return phrase_pertinente
+    if phrase_pertinente:  # Vérifie si la chaîne n'est pas vide
+        premier_caractere = phrase_pertinente[0].lower()  # Premier caractère en minuscule
+        reste_de_la_phrase = phrase_pertinente[1:]  # Le reste de la chaîne
+        return premier_caractere + reste_de_la_phrase
+    else:
+        return phrase_pertinente
+
+
+def generation_reponse(phrase_pertinente, question):
+    questions_genere = {
+        "Comment": "Après analyse, ",
+        "Pourquoi": "Car, ",
+        "Peux-tu": "Oui, bien sûr! "
+    }
+
+    for mot, reponse in questions_genere.items():
+        "reponse_genere = None"
+        print(mot)
+        print(reponse)
+        if mot in question:
+            reponse_genere = questions_genere[mot] + phrase_pertinente
+            print(reponse_genere)
+            break
+
+    #return reponse_genere
