@@ -4,7 +4,8 @@ from os.path import isfile, join
 from Fonctions import *
 
 nom_repertoire = 'Speeches'
-
+nom_repertoire_temporaire = 'Cleaned'
+nom_repertoire_test = 'Testo'
 # Effectuer une liste des nom des fichiers du dossier "Speeches"
 liste_fichiers = [f for f in listdir(nom_repertoire) if
            isfile(join(nom_repertoire, f))]
@@ -131,18 +132,24 @@ for fichier in listdir(dossier_corpus):
             presidents_climat_ecologie[nom_president] = True  # Enregistrer le président comme ayant parlé de ces sujets
 """
 
+question = ("Aimes tu bieng les pates ?")
+question_formate = changer_le_format(question, )
 
-question = "fixera les grandes orientations"
 
 
-vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire, tf_idf_question(question), tf_idf(nom_repertoire))
-print(vecteur_question)
-matrice = tf_idf(nom_repertoire, True)
-print(matrice)
-
-a = calcul_document_pertinent(matrice, vecteur_question, liste_fichiers)
-print(a)
+matrice = tf_idf(nom_repertoire_test, True)
+#print(matrice)
+liste_question = tokenisation_question( question)
+vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire_test, liste_question, tf_idf(nom_repertoire_test))
+doc_pertinent = calcul_document_pertinent(matrice, vecteur_question, liste_fichiers)
+print(doc_pertinent)
 #print("Test len :", len(matrice.values()))
+
+
+
+
+meilleur_tf_idf(nom_repertoire_test, liste_question, tf_idf(nom_repertoire_test))
+
 
 """
 #print("Test : ",test)

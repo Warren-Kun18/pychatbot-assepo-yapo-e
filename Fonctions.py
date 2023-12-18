@@ -1,8 +1,8 @@
 import os
 import shutil
 from math import *
-from os import listdir #renvoie une liste contenant les noms des fichier dans le répertoire spécifié
-from os.path import isfile, join #vérifie si un chemin donné correspond à un fichier régulier (renvoi un booleen)
+from os import listdir  # renvoie une liste contenant les noms des fichier dans le répertoire spécifié
+from os.path import isfile, join  # vérifie si un chemin donné correspond à un fichier régulier (renvoi un booleen)
 
 # Créer un dictionnaire qui asssocie à chaque nom, un prénom
 nom_des_presidents = {
@@ -29,7 +29,8 @@ def associer_prenom(nom, nom_des_presidents):
     # Retourne le dictionnaire 'nom_des_presidents'
     return nom_des_presidents[nom]
 
-#fonction affichage de la liste de nom
+
+# fonction affichage de la liste de nom
 def afficher_liste_de_nom(noms_des_fichiers):
     liste_de_nom = []
     # Ajoute à chaque élément de ma liste "liste_de_nom"
@@ -38,21 +39,23 @@ def afficher_liste_de_nom(noms_des_fichiers):
         liste_de_nom = list(set(liste_de_nom))
     print(liste_de_nom)
 
-#fonction de conversion de chaque fichier en minuscule
+
+# fonction de conversion de chaque fichier en minuscule
 def convertir_fichier(nom_fichier):
     # Copie le contenu du fichier
-    fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')#ouverture du fichier a modifier
+    fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')  # ouverture du fichier a modifier
     lignes = fichier_origine.readlines()
     fichier_origine.close()
     # Créer un nouveau fichier dans le dossier Cleaned et transformer tout le dossier en minuscule
-    fichier_modifie = open("Cleaned/{}".format(nom_fichier), "w", encoding='UTF-8')#ouverture d'un nouveau fichier clean
+    fichier_modifie = open("Cleaned/{}".format(nom_fichier), "w",
+                           encoding='UTF-8')  # ouverture d'un nouveau fichier clean
     for ligne in lignes:
         fichier_modifie.write(changer_le_format(ligne))
     fichier_modifie.close()
 
 
 # Supprime la ponctuation des fichiers
-def changer_le_format(texte, supprime_ponctuation=True):#Si on ne met pas la parametre ça supprime la ponctuation
+def changer_le_format(texte, supprime_ponctuation=True):  # Si on ne met pas la parametre ça supprime la ponctuation
     texte_sans_ponctuation = ""
     if supprime_ponctuation:
         texte = texte.replace("-", " ")
@@ -62,9 +65,9 @@ def changer_le_format(texte, supprime_ponctuation=True):#Si on ne met pas la par
 
     return texte_sans_ponctuation.lower()
 
-#fonction tf
-def tf(chemin):
 
+# fonction tf
+def tf(chemin):
     fichier = open(chemin, "r", encoding='UTF-8')
     lignes = fichier.readlines()
     dico_repetition_mot = {}
@@ -109,11 +112,12 @@ def idf(nom_fichier):
 
     return dico_idf
 """
+
+
 def idf(repertoire):
-    liste_dico =[] #Création d'une liste qui se nomme Liste dico
+    liste_dico = []  # Création d'une liste qui se nomme Liste dico
     contenu = os.listdir(repertoire)
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
-
 
     for i in range(len(chemins_complets)):
         liste_dico.append(tf(chemins_complets[i]))
@@ -122,12 +126,13 @@ def idf(repertoire):
     for i in range(len(liste_dico)):
         for mot, recurrence in liste_dico[i].items():
             if mot in dico_global:
-                dico_global[mot] = dico_global[mot] +1
+                dico_global[mot] = dico_global[mot] + 1
             else:
                 dico_global[mot] = 1
     for mot_global, recurrence_global in dico_global.items():
-        dico_global[mot_global] = log(len(chemins_complets)/recurrence_global)
+        dico_global[mot_global] = log(len(chemins_complets) / recurrence_global)
     return dico_global
+
 
 # fonction TF-IDF
 """def scoreTF_IDF(chemin_du_document):  # le parametre est une liste qui doit contenir les differents fichiers
@@ -148,19 +153,20 @@ def idf(repertoire):
     return matriceTF_idf
 """
 
-def tf_idf(repertoire, transposee = False):#Si il n'y a pas de parametre pour la transposée ça ne met pas la transposée
-    #Création d'une liste regroupant les tf de chaque fichier
+
+def tf_idf(repertoire, transposee=False):  # Si il n'y a pas de parametre pour la transposée ça ne met pas la transposée
+    # Création d'une liste regroupant les tf de chaque fichier
     liste_mots = []
     tf_global = []
     nb_mot_unique = 0
-    #Appel de la fonction idf
+    # Appel de la fonction idf
     idf_global = idf(repertoire)
-    #Faire une liste des chemins du dossier choisi
+    # Faire une liste des chemins du dossier choisi
     contenu = os.listdir(repertoire)
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
 
     for i in range(len(chemins_complets)):
-        #Mettre à chaque élément de la liste son score tf
+        # Mettre à chaque élément de la liste son score tf
         tf_fichier = tf(chemins_complets[i])
         tf_global.append(tf_fichier)
         print(tf_fichier)
@@ -170,27 +176,30 @@ def tf_idf(repertoire, transposee = False):#Si il n'y a pas de parametre pour la
                 liste_mots.append(mot)
 
     nb_mot_unique += len(liste_mots)
-    matrice_tf_idf = {}#matrice est un dictionaire
+    matrice_tf_idf = {}  # matrice est un dictionaire
     for i in range(nb_mot_unique):
         for j in range(len(tf_global)):
 
             if liste_mots[i] in matrice_tf_idf:
                 score = 0.0
-                if liste_mots[i] in tf_global[j]: # Si le mot n'apparait pas dans le fichier on met 0.0
+                if liste_mots[i] in tf_global[j]:  # Si le mot n'apparait pas dans le fichier on met 0.0
                     score = tf_global[j][liste_mots[i]] * idf_global[liste_mots[i]]
-                matrice_tf_idf[liste_mots[i]].append(score)   #ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
+                matrice_tf_idf[liste_mots[i]].append(
+                    score)  # ajout du score tf_idf de chaque mot dans la liste de associer a chaque mot
             else:
                 score = 0.0
                 if liste_mots[i] in tf_global[j]:  # Si le mot n'apparait pas dans le fichier on met 0.0
                     score = tf_global[j][liste_mots[i]] * idf_global[liste_mots[i]]
-                matrice_tf_idf[liste_mots[i]] = [score]#creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
+                matrice_tf_idf[liste_mots[i]] = [
+                    score]  # creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
 
     if transposee:
-        matrice_tf_idf = transpose_matrice(matrice_tf_idf)
+        matrice_tf_idf = transposee_matrice(matrice_tf_idf)
 
     return matrice_tf_idf
 
-def transpose_matrice(matrice_tf_idf):
+
+def transposee_matrice(matrice_tf_idf):
     B = []
 
     for i in range(len(list(matrice_tf_idf.values())[0])):
@@ -200,88 +209,122 @@ def transpose_matrice(matrice_tf_idf):
         B.append(c)
 
     return B
-#PARTIE 2
 
-#fonction tokenisation de la question
-def tf_idf_question(question):
-    question_clean=changer_le_format(question)#permet d'enlever toutes les ponctuations et de lower la question
-    liste_de_mot_question=question_clean.split(" ")
+
+# PARTIE 2
+
+# fonction tokenisation de la question
+def tokenisation_question(question):
+    question_clean = changer_le_format(question)  # permet d'enlever toutes les ponctuations et de lower la question
+    liste_de_mot_question = question_clean.split(" ")
+    print("Liste mot question:", liste_de_mot_question)
     return liste_de_mot_question
-#fonction calcul de la similarité
+
+
+# fonction calcul de la similarité
 
 def recherche_mot(liste_mot_question, matrice_tf_idf):
     list_mot_trouves = []
     for mot in liste_mot_question:
-        if mot in matrice_tf_idf :
+        if mot in matrice_tf_idf:
             list_mot_trouves.append(mot)
+
     return list_mot_trouves
 
 
-
 def tf_question(liste_mot_question, matrice_tf_idf):
-    dico_tf_question = {} #création d'un dico
-    for mot in matrice_tf_idf.keys(): #Parcours de la matrice tf-idf
-        if mot in liste_mot_question: #Si le mot de la question se trouve dans le corpus on calcule le TF
-            dico_tf_question[mot] = liste_mot_question.count(mot)/len(liste_mot_question)
-        else: #Sinon on met 0 en valeur
+    dico_tf_question = {}  # création d'un dico
+    for mot in matrice_tf_idf.keys():  # Parcours de la matrice tf-idf
+        if mot in liste_mot_question:  # Si le mot de la question se trouve dans le corpus on calcule le TF
+            dico_tf_question[mot] = liste_mot_question.count(mot) / len(liste_mot_question)
+        else:  # Sinon on met 0 en valeur
             dico_tf_question[mot] = 0
     return dico_tf_question
 
 
-
-def calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf):
-    idf_qst = idf(chemin) # Appel de la fonction IDF
-    tf_qst = tf_question(liste_mot_question, matrice_tf_idf) #Appel de la fonction TF de la question
-    #print(tf_qst)
+def calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, avec_cle=False):
+    idf_qst = idf(chemin)  # Appel de la fonction IDF
+    tf_qst = tf_question(liste_mot_question, matrice_tf_idf)  # Appel de la fonction TF de la question
+    # print(tf_qst)
     tf_idf_qst = 0
-    liste_vecteur = []
+    if avec_cle:  # Si cette variable est vrai alors liste vecteur est dico
+        liste_vecteur = {}
+    else:  # Sinon liste vecteur est une liste
+        liste_vecteur = []
     for mot in idf_qst.keys():
-        tf_idf_qst += idf_qst[mot]*tf_qst[mot]
-        liste_vecteur.append(idf_qst[mot]*tf_qst[mot])
+        if avec_cle:
+            tf_idf_qst += idf_qst[mot] * tf_qst[mot]
+            liste_vecteur[mot] = idf_qst[mot] * tf_qst[mot]
+        else:
+            tf_idf_qst += idf_qst[mot] * tf_qst[mot]
+            liste_vecteur.append(idf_qst[mot] * tf_qst[mot])
+
+    print("Liste vecteur:", liste_vecteur)
+
     return liste_vecteur
 
 
 def produit_scalaire(vectA, vectB):
-    sommeAB = 0 #Initialisation d'une variable somme
+    sommeAB = 0  # Initialisation d'une variable somme
     m = len(vectB)
     print(m)
     for i in range(0, m):
         """print(i)
         print("Vecteur A : ", vectA[i])
         print("Vecteur B : ", vectB[i])"""
-        sommeAB = sommeAB + (float(vectA[i])*float(vectB[i])) #Somme du produit de  chaque élément du produits des vecteurs A et B
-    #print("Somme AB :",sommeAB)
+        sommeAB = sommeAB + (float(vectA[i]) * float(
+            vectB[i]))  # Somme du produit de  chaque élément du produits des vecteurs A et B
+    # print("Somme AB :",sommeAB)
     return sommeAB
+
 
 def norme_vecteur(vect):
     somme = 0
     m = len(vect)
     for i in range(0, m):
-        somme = somme + (vect[i]*vect[i])  #Somme des carrées de chaquue élément du vecteur A
+        somme = somme + (vect[i] * vect[i])  # Somme des carrées de chaquue élément du vecteur A
 
-    somme = sqrt(somme) #Racine carée de la somme du des carrées de chaque élément du vecteur A
+    somme = sqrt(somme)  # Racine carée de la somme du des carrées de chaque élément du vecteur A
     """print("Norme :",somme)"""
     return somme
+
 
 def calcul_similarité(vectA, vectB):
     """print("Vecteur A : " ,vectA)
     print("Vecteur B :",vectB)"""
-    resultat = produit_scalaire(vectA, vectB) / (norme_vecteur(vectA) * norme_vecteur(vectB)) #Calcul de la similarité
+    resultat = produit_scalaire(vectA, vectB) / (norme_vecteur(vectA) * norme_vecteur(vectB))  # Calcul de la similarité
 
     return resultat
 
 
 def calcul_document_pertinent(matrice_tf_idf, vecteur_tf_idf_question, liste_noms_fichiers):
-    matval = len(matrice_tf_idf)
-    similariteMax = 0
-    idDoc = None
+    matval = len(matrice_tf_idf)  # calcul la longueur de la matrice
+    similariteMax = 0  # initialisation de la vraible similariteMax
+    idDoc = None  # initialisation de la variable idDoc
     for i in range(0, matval):
-        similariteCourante = calcul_similarité(vecteur_tf_idf_question, matrice_tf_idf[i])
+        similariteCourante = calcul_similarité(vecteur_tf_idf_question,
+                                               matrice_tf_idf[i])  # appel de la fonction de la calcul similarite
         print((similariteCourante))
-        if (similariteCourante > similariteMax):
+        if (
+                similariteCourante > similariteMax):  # attribue à similarité max la plus grande valeur du calcul de similarité
             similariteMax = similariteCourante
             idDoc = i
-
+    print(liste_noms_fichiers)
     print(similariteMax)
     print(idDoc, "\n")
-    return liste_noms_fichiers[idDoc]
+    return liste_noms_fichiers[idDoc]  # renvoie le fichier correspondant à ce calcul
+
+
+def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
+    vecteur_question = calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, True)
+    print(calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf))
+    print("Vecteur question :", vecteur_question)
+    tf_idf_max = 0
+    mot_max = None
+    for mot, valeur in vecteur_question.items():
+        if (valeur > tf_idf_max):
+            tf_idf_max = valeur
+            mot_max = mot
+        # print("Avant: ", valeur, mot)
+
+    print("Test score :", tf_idf_max, "Mot : ", mot_max)
