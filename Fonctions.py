@@ -36,7 +36,8 @@ def afficher_liste_de_nom(noms_des_fichiers):
     # Ajoute à chaque élément de ma liste "liste_de_nom"
     for i in range(len(noms_des_fichiers)):
         liste_de_nom.append(extraire_nom(noms_des_fichiers[i]))
-        liste_de_nom = list(set(liste_de_nom))
+
+    return liste_de_nom
 
 
 # fonction de conversion de chaque fichier en minuscule
