@@ -11,12 +11,7 @@ liste_fichiers = [f for f in listdir(nom_repertoire) if
 for i in range(len(liste_fichiers)):
     convertir_fichier(liste_fichiers[i])
 
-#FONCTIONALITE
-print("1. Afficher les mots moins importants")
-print("2. Afficher les mots avec le score TD-IDF le plus élevé")
-print("3. Indiquer les mots les plus répétés par Chirac")
-print("4. Indiquer les noms des présidents qui ont parlé de la Nation et celui qui l'a répété le plus ")
-print("5. Indiquer le premier président qui a parler du climat et/ou de l'écologie")
+
 
 
 #fonctionalité 1: affichage des mots les moins importants
@@ -137,11 +132,19 @@ for fichier in listdir(dossier_corpus):
         if any(mot in frequence_mots for mot in champ_lexical_ecologie):
             presidents_climat_ecologie[nom_president] = True  # Enregistrer le président comme ayant parlé de ces sujets
 
-
-mode=int(intput("tapez 1 pour utiliser lancer le mode fonctionnalité ou tapez 2 pour lancer le mode chatbot: "))
-while mode !=1 or mode!=2:
-    mode=int(input("tapez 1 pour utiliser lancer le mode fonctionnalité ou tapez 2 pour lancer le mode chatbot: "))
-if mode=1:
+#choix du mode
+mode=int(input("tapez 1 pour utiliser lancer le mode fonctionnalité ou tapez 2 pour lancer le mode chatbot: "))
+#saisie sécurisée
+"""while mode !=1 or mode!=2:
+    mode=int(input("tapez 1 pour utiliser lancer le mode fonctionnalité ou tapez 2 pour lancer le mode chatbot: "))"""
+#mode fonctionnalité
+if mode==1:
+    # FONCTIONALITE
+    print("1. Afficher les mots moins importants")
+    print("2. Afficher les mots avec le score TD-IDF le plus élevé")
+    print("3. Indiquer les mots les plus répétés par Chirac")
+    print("4. Indiquer les noms des présidents qui ont parlé de la Nation et celui qui l'a répété le plus ")
+    print("5. Indiquer le premier président qui a parler du climat et/ou de l'écologie")
     #boucle pour executer les fonctionnalités
     recommencer="oui"
     while recommencer=="oui":
@@ -151,6 +154,7 @@ if mode=1:
         while not 1 <= numero < 6:
             numero = int(input("Veuillez rentrer un numero parmi ceux proposer: "))
         if numero==1:
+            print(f"Vous avez tapez {numero}")
             print("Les mots les moins importants dans le corpus sont:")
             for mot in liste_mot_non_important:
                 if mot != liste_mot_non_important[-1]:
@@ -158,6 +162,7 @@ if mode=1:
                 else:
                     print(mot)
         elif numero==2:
+            print(f"Vous avez tapez {numero}")
             print("Le ou les mots avec avec le score TD-IDF le plus élevé dans le corpus sont:")
             for mot in liste_mot_important:
                 if mot != liste_mot_important[-1][0] and len(liste_mot_important)!=1:
@@ -165,15 +170,18 @@ if mode=1:
                 else:
                     print(mot[0])
         elif numero==3:
+            print(f"Vous avez tapez {numero}")
             print("Le ou les mots les plus répétés par le président Chirac sont:")
             for mot in liste_mot_plus_repete_chirac:
                 print(mot[0])
         elif numero==4:
+            print(f"Vous avez tapez {numero}")
             print("Les présidents qui ont parlé de 'Nation' sont:")
             for nom_president in frequences_nation_par_president.keys():
                 print(nom_president)
             print(f"Le président qui a le plus parlé de 'Nation' est {president_max} avec {frequence_max} mentions.")
         elif numero==5:
+            print(f"Vous avez tapez {numero}")
             if presidents_climat_ecologie:
                 print("Présidents ayant parlé du climat et/ou de l'écologie :")
                 for president in presidents_climat_ecologie.keys():
@@ -181,7 +189,7 @@ if mode=1:
             else:
                 print("Aucun président n'a mentionné le climat ou l'écologie.")
         recommencer=input("Si vous voulez tester d'autres fonctionnalités entrez 'oui' sinon entrez 'non': ")
-
+#mode chatbot
 else:
     print("Bonjour je suis votre chatbot spécialisé dans les discours des présidents")
     question = str(input("Posez moi votre question : "))
@@ -193,5 +201,5 @@ else:
     phrase_pertinente =  reponse_pertinente("./{}/{}".format(nom_repertoire, doc_pertinent), mot_pertinent)
     reponse_genere = generation_reponse(phrase_pertinente, question)
     print(reponse_genere)
-    question=str(input("Avez vous d'autres questions entrez 'oui' ou 'non': "))
+
 
