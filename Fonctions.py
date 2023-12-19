@@ -36,6 +36,7 @@ def afficher_liste_de_nom(noms_des_fichiers):
     # Ajoute à chaque élément de ma liste "liste_de_nom"
     for i in range(len(noms_des_fichiers)):
         liste_de_nom.append(extraire_nom(noms_des_fichiers[i]))
+        liste_de_nom = list(set(liste_de_nom))
 
     return liste_de_nom
 
@@ -57,11 +58,11 @@ def convertir_fichier(nom_fichier):
 # Supprime la ponctuation des fichiers
 def changer_le_format(texte, supprime_ponctuation=True):  # Si on ne met pas la parametre ça supprime la ponctuation
     texte_sans_ponctuation = ""
-    if supprime_ponctuation:
+    if supprime_ponctuation: #Remplace les ponctuations par des espaces
         texte = texte.replace("-", " ")
         texte = texte.replace("'", " ")
         ponctuation = ['!', '"', '#', '&', '(', ')', '*', '+', ',', '.', '/', ':', '']
-        texte_sans_ponctuation = ''.join([c for c in texte if c not in ponctuation])
+        texte_sans_ponctuation = ''.join([c for c in texte if c not in ponctuation]) #Le texte sans ponctuation est mis dans une variable
 
     return texte_sans_ponctuation.lower()
 
@@ -72,9 +73,9 @@ def tf(chemin):
     lignes = fichier.readlines()
     dico_repetition_mot = {}
     # transformation de fichier en liste
-    liste = []
-    for i in range(len(lignes)):
-        liste.append(lignes[i].strip().split(" "))
+    liste = [] #Création d'une liste
+    for i in range(len(lignes)): #Parcours de chaque ligne du fichier
+        liste.append(lignes[i].strip().split(" "))  #Met tous les mots du fichier dans la liste qu'on a créé
     for i in range(len(liste)):
         for j in range(len(liste[i])):
             if len(liste[i][j]) <= 1:
@@ -116,15 +117,15 @@ def idf(nom_fichier):
 
 def idf(repertoire):
     liste_dico = []  # Création d'une liste qui se nomme Liste dico
-    contenu = os.listdir(repertoire)
+    contenu = os.listdir(repertoire) #Prend tous les chemins des fichiers d'un repertoire
     chemins_complets = [os.path.join(repertoire, element) for element in contenu]
 
     for i in range(len(chemins_complets)):
         liste_dico.append(tf(chemins_complets[i]))
 
-    dico_global = {}
-    for i in range(len(liste_dico)):
-        for mot, recurrence in liste_dico[i].items():
+    dico_global = {}#Création d'un dico
+    for i in range(len(liste_dico)): #Parcours de la liste dico
+        for mot, recurrence in liste_dico[i].items(): #Parcours de
             if mot in dico_global:
                 dico_global[mot] = dico_global[mot] + 1
             else:
@@ -192,7 +193,7 @@ def tf_idf(repertoire, transposee=False):  # Si il n'y a pas de parametre pour l
                 matrice_tf_idf[liste_mots[i]] = [
                     score]  # creation du mot et ajout du score tf_idf du mot dans la liste de associer a ce mot
 
-    if transposee:
+    if transposee: #Si la la variable transposée est vrai alors on transpose la matrice
         matrice_tf_idf = transposee_matrice(matrice_tf_idf)
 
     return matrice_tf_idf
@@ -222,9 +223,9 @@ def tokenisation_question(question):
 # fonction calcul de la similarité
 
 def recherche_mot(liste_mot_question, matrice_tf_idf):
-    list_mot_trouves = []
-    for mot in liste_mot_question:
-        if mot in matrice_tf_idf:
+    list_mot_trouves = []# Création d'une liste
+    for mot in liste_mot_question: #Parcours de la liste
+        if mot in matrice_tf_idf: #Si le mot se trouve dans la matrice tf_idf amors ça l'ajoute à liste qu'on vient créer
             list_mot_trouves.append(mot)
 
     return list_mot_trouves
@@ -313,8 +314,8 @@ def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
                                                       True)  # Appel de la fonction calcul vecteur tf idf question
     tf_idf_max = 0
     mot_max = None
-    for mot, valeur in vecteur_question.items():
-        if (valeur > tf_idf_max):
+    for mot, valeur in vecteur_question.items(): #Parcours du dico vecteur question
+        if (valeur > tf_idf_max): #Renvoie le mot du meilleur score tf idf du dico vecteur question
             tf_idf_max = valeur
             mot_max = mot
         # print("Avant: ", valeur, mot)
@@ -324,10 +325,10 @@ def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
 
 def reponse_pertinente(fichier, mot):
     fichier_ouvert = open(fichier, "r", encoding='UTF-8')
-    lignes = fichier_ouvert.readlines()
+    lignes = fichier_ouvert.readlines() #Transforme les lignes de fichier en liste
     phrase_pertinente = ""
-    for ligne in lignes:
-        if ligne.find(mot) > -1:
+    for ligne in lignes: #Parcours des lignes
+        if ligne.find(mot) > -1: #Quand le mot pertinent est trouvé pour la première fois il renvoie la ligne entière où il apparait
             phrase_pertinente = ligne
             break
     if phrase_pertinente:  # Vérifie si la chaîne n'est pas vide
@@ -339,7 +340,7 @@ def reponse_pertinente(fichier, mot):
 
 
 def generation_reponse(phrase_pertinente, question):
-    questions_genere = {
+    questions_genere = { #Création d'un dico afin de générer des réponses plus vivantes
         "Comment": "Après analyse, ",
         "Pourquoi": "Car, ",
         "Peux-tu": "Oui, bien sûr! ",
@@ -348,16 +349,16 @@ def generation_reponse(phrase_pertinente, question):
         "peux-tu": "Oui, bien sûr! "
     }
 
-    for mot, reponse in questions_genere.items():
+    for mot, reponse in questions_genere.items(): #Parcours du dico
         "reponse_genere = None"
-        if mot in question:
+        if mot in question: #Condition de si la clé du dico est dans la question posé par l'utilsateur alors ça met renvoie la valeur de clé plus la phrase pertinente
             reponse_genere = questions_genere[mot] + phrase_pertinente
             return reponse_genere
         else :
             reponse_genere = phrase_pertinente
-            if reponse_genere:  # Vérifie si la chaîne n'est pas vide
-                premier_caractere = reponse_genere[0].lower()  # Premier caractère en minuscule
-                reste_de_la_phrase = reponse_genere[1:]  # Le reste de la chaîne
+            if reponse_genere:  #Met une majuscule à la première lettre de la phrase si elle a trouve l'une des clés du dico dans la question
+                premier_caractere = reponse_genere[0].upper()
+                reste_de_la_phrase = reponse_genere[1:]
                 return premier_caractere + reste_de_la_phrase
             else:
                 return reponse_genere
