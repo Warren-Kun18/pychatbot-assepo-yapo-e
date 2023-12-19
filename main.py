@@ -4,14 +4,13 @@ from os.path import isfile, join
 from Fonctions import *
 
 nom_repertoire = 'Speeches'
-nom_repertoire_temporaire = 'Cleaned'
-nom_repertoire_test = 'Testo'
+nom_repertoire_fichier_cree = 'Cleaned'
 # Effectuer une liste des nom des fichiers du dossier "Speeches"
 liste_fichiers = [f for f in listdir(nom_repertoire) if
            isfile(join(nom_repertoire, f))]
 for i in range(len(liste_fichiers)):
     convertir_fichier(liste_fichiers[i])
-"""
+
 #FONCTIONALITE
 print("1. Afficher les mots moins importants")
 print("2. Afficher les mots avec le score TD-IDF le plus élevé")
@@ -19,7 +18,8 @@ print("3. Indiquer les mots les plus répétés")
 print("4. Indiquer les noms des présidents qui ont parlé de la Nation et celui qui l'a répété le plus ")
 print("5. Indiquer le premier président qui a parler du climat et/ou de l'écologie")
 print("6. Quels sont les mots que tous les présidents ont évoqués hormis les mots importants")
-
+print("7. Accéder au Chatbot")
+"""
 #fonctionalité 1: affichage des mots les moins importants
 tf_idf_cleaned=tf_idf('Cleaned')#tf_idf du fichier cleaned
 liste_mot_non_important=[]#liste mot non important
@@ -130,35 +130,9 @@ for fichier in listdir(dossier_corpus):
         # Vérifier si l'un des mots du champ lexical est présent dans le fichier
         if any(mot in frequence_mots for mot in champ_lexical_ecologie):
             presidents_climat_ecologie[nom_president] = True  # Enregistrer le président comme ayant parlé de ces sujets
-"""
-
-question = ("Comment le climat change avec le temps ?")
-question_formate = changer_le_format(question, )
 
 
 
-matrice = tf_idf(nom_repertoire, True)
-#print(matrice)
-liste_question = tokenisation_question( question)
-vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire, liste_question, tf_idf(nom_repertoire))
-doc_pertinent = calcul_document_pertinent(matrice, vecteur_question, liste_fichiers)
-print(doc_pertinent)
-#print("Test len :", len(matrice.values()))
-
-
-
-
-mot_pertinent = meilleur_tf_idf(nom_repertoire, liste_question, tf_idf(nom_repertoire))
-print("Mot pertinent :" ,mot_pertinent)
-phrase_pertinente =  reponse_pertinente("./{}/{}".format(nom_repertoire, doc_pertinent), mot_pertinent)
-print("Reponse pertinente",phrase_pertinente)
-
-generation_reponse(phrase_pertinente, question)
-
-"""
-#print("Test : ",test)
-"""
-"""
 #demande a l'utilisateur de choisir une fonctionalité
 numero=int(input("Pour éxécuter l'une des fonctionnalité suivante entrez tapez le numéro qui précède la fonctionnalité: "))
 #saisie securise
@@ -179,7 +153,17 @@ elif numero==5:
             print(president)
     else:
         print("Aucun président n'a mentionné le climat ou l'écologie.")
+elif numero == 7:
 
 """
 
-
+print("Bonjour je suis votre chatbot spécialisé dans les discours des présidents")
+question = str(input("Posez moi votre question : "))
+matrice = tf_idf(nom_repertoire, True)
+liste_question = tokenisation_question( question)
+vecteur_question = calcul_vecteur_tf_idf_question(nom_repertoire, liste_question, tf_idf(nom_repertoire))
+doc_pertinent = calcul_document_pertinent(matrice, vecteur_question, liste_fichiers)
+mot_pertinent = meilleur_tf_idf(nom_repertoire, liste_question, tf_idf(nom_repertoire))
+phrase_pertinente =  reponse_pertinente("./{}/{}".format(nom_repertoire, doc_pertinent), mot_pertinent)
+reponse_genere = generation_reponse(phrase_pertinente, question)
+print(reponse_genere)

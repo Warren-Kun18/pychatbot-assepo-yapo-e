@@ -37,7 +37,6 @@ def afficher_liste_de_nom(noms_des_fichiers):
     for i in range(len(noms_des_fichiers)):
         liste_de_nom.append(extraire_nom(noms_des_fichiers[i]))
         liste_de_nom = list(set(liste_de_nom))
-    print(liste_de_nom)
 
 
 # fonction de conversion de chaque fichier en minuscule
@@ -169,7 +168,6 @@ def tf_idf(repertoire, transposee=False):  # Si il n'y a pas de parametre pour l
         # Mettre à chaque élément de la liste son score tf
         tf_fichier = tf(chemins_complets[i])
         tf_global.append(tf_fichier)
-        print(tf_fichier)
 
         for mot, occurence in tf_fichier.items():
             if mot not in liste_mots:
@@ -217,7 +215,6 @@ def transposee_matrice(matrice_tf_idf):
 def tokenisation_question(question):
     question_clean = changer_le_format(question)  # permet d'enlever toutes les ponctuations et de lower la question
     liste_de_mot_question = question_clean.split(" ")
-    print("Liste mot question:", liste_de_mot_question)
     return liste_de_mot_question
 
 
@@ -259,7 +256,6 @@ def calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, a
             tf_idf_qst += idf_qst[mot] * tf_qst[mot]
             liste_vecteur.append(idf_qst[mot] * tf_qst[mot])
 
-    print("Liste vecteur:", liste_vecteur)
 
     return liste_vecteur
 
@@ -267,7 +263,6 @@ def calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf, a
 def produit_scalaire(vectA, vectB):
     sommeAB = 0  # Initialisation d'une variable somme
     m = len(vectB)
-    print(m)
     for i in range(0, m):
         """print(i)
         print("Vecteur A : ", vectA[i])
@@ -304,22 +299,17 @@ def calcul_document_pertinent(matrice_tf_idf, vecteur_tf_idf_question, liste_nom
     for i in range(0, matval):
         similariteCourante = calcul_similarité(vecteur_tf_idf_question,
                                                matrice_tf_idf[i])  # appel de la fonction de la calcul similarite
-        print((similariteCourante))
         if (
                 similariteCourante > similariteMax):  # attribue à similarité max la plus grande valeur du calcul de similarité
             similariteMax = similariteCourante
             idDoc = i
-    print(liste_noms_fichiers)
-    print(similariteMax)
-    print(idDoc, "\n")
+
     return liste_noms_fichiers[idDoc]  # renvoie le fichier correspondant à ce calcul
 
 
 def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
     vecteur_question = calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf,
                                                       True)  # Appel de la fonction calcul vecteur tf idf question
-    print(calcul_vecteur_tf_idf_question(chemin, liste_mot_question, matrice_tf_idf))
-    print("Vecteur question :", vecteur_question)
     tf_idf_max = 0
     mot_max = None
     for mot, valeur in vecteur_question.items():
@@ -328,7 +318,6 @@ def meilleur_tf_idf(chemin, liste_mot_question, matrice_tf_idf):
             mot_max = mot
         # print("Avant: ", valeur, mot)
 
-    print("Test score :", tf_idf_max, "Mot : ", mot_max)
     return mot_max
 
 
@@ -352,16 +341,22 @@ def generation_reponse(phrase_pertinente, question):
     questions_genere = {
         "Comment": "Après analyse, ",
         "Pourquoi": "Car, ",
-        "Peux-tu": "Oui, bien sûr! "
+        "Peux-tu": "Oui, bien sûr! ",
+        "comment": "Après analyse, ",
+        "pourquoi": "Car, ",
+        "peux-tu": "Oui, bien sûr! "
     }
 
     for mot, reponse in questions_genere.items():
         "reponse_genere = None"
-        print(mot)
-        print(reponse)
         if mot in question:
             reponse_genere = questions_genere[mot] + phrase_pertinente
-            print(reponse_genere)
-            break
-
-    #return reponse_genere
+            return reponse_genere
+        else :
+            reponse_genere = phrase_pertinente
+            if reponse_genere:  # Vérifie si la chaîne n'est pas vide
+                premier_caractere = reponse_genere[0].lower()  # Premier caractère en minuscule
+                reste_de_la_phrase = reponse_genere[1:]  # Le reste de la chaîne
+                return premier_caractere + reste_de_la_phrase
+            else:
+                return reponse_genere
