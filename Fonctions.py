@@ -47,6 +47,11 @@ def convertir_fichier(nom_fichier):
     fichier_origine = open("Speeches/{}".format(nom_fichier), "r", encoding='UTF-8')  # ouverture du fichier a modifier
     lignes = fichier_origine.readlines()
     fichier_origine.close()
+    
+    # Vérifier que le dossier Cleaned existe (si non en le crée)
+    if not os.path.exists("Cleaned"):
+        os.makedirs("Cleaned")
+        
     # Créer un nouveau fichier dans le dossier Cleaned et transformer tout le dossier en minuscule
     fichier_modifie = open("Cleaned/{}".format(nom_fichier), "w",
                            encoding='UTF-8')  # ouverture d'un nouveau fichier clean
